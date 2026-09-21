@@ -1,0 +1,16 @@
+2026-09-20T08:28:30.590725900 | Usuario: Luis | Estado: ERROR DE ACCESO
+2026-09-20T08:28:41.889672200 | Usuario: carmen.castillo | Estado: ERROR DE ACCESO
+2026-09-20T08:28:48.981864 | Usuario: carmen.castillo | Estado: ERROR DE ACCESO
+2026-09-20T08:28:55.602531900 | Usuario: carmen.castillo | Estado: ERROR DE ACCESO
+2026-09-20T08:33:50.684702800 | Usuario: Luis | Estado: ERROR DE ACCESO
+2026-09-20T08:36:02.973393600 | Usuario: jose.garcia | Estado: ERROR DE ACCESO
+2026-09-20T08:36:11.891976200 | Usuario: jose.garcia | Estado: ERROR DE ACCESO
+2026-09-20T08:36:21.752138600 | Usuario: carmen.castillo | Estado: INGRESO EXITOSO
+2026-09-20T08:37:19.471224200 | Usuario: jose.alvarado | Estado: INGRESO EXITOSO
+2026-09-20T12:20:17.196960300 | Usuario: luis | Estado: ERROR DE ACCESO
+2026-09-20T12:20:41.232341300 | Usuario: ana.torres | Estado: INGRESO EXITOSO
+2026-09-20T12:46:18.338616 | Usuario: Luis | Estado: ERROR DE ACCESO
+2026-09-20T12:46:35.714999500 | Usuario: eva.mendoza | Estado: INGRESO EXITOSO
+2026-09-20T12:50:43.746128 | Usuario: eva.mendoza | Estado: INGRESO EXITOSO
+2026-09-20T13:12:11.605262100 | Usuario: luis | Estado: ERROR DE ACCESO
+2026-09-20T13:13:25.165582 | Usuario: pedro.velarde | Estado: INGRESO EXITOSO

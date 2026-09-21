@@ -1,0 +1,3 @@
+T001|001|Estudiar para el examen de POO|Urgente|Pendiente
+T002|001|Comprar componentes de Java|Rutinario|Completado
+T003|002|Revisar código del squad|Urgente|Pendiente
