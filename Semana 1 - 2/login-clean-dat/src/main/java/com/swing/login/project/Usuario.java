@@ -10,6 +10,9 @@ public class Usuario {
         this.password = password;
         this.activo = activo;
     }
+    
+    public Usuario() {
+    }
 
     public String getUsername() { return username; }
     public String getPassword() { return password; }

@@ -14,3 +14,5 @@
 2026-09-20T12:50:43.746128 | Usuario: eva.mendoza | Estado: INGRESO EXITOSO
 2026-09-20T13:12:11.605262100 | Usuario: luis | Estado: ERROR DE ACCESO
 2026-09-20T13:13:25.165582 | Usuario: pedro.velarde | Estado: INGRESO EXITOSO
+2026-10-10T22:01:43.782669 | Usuario: eva.mendoza | Estado: INGRESO EXITOSO
+2026-10-10T22:23:23.458816700 | Usuario: pedro.velarde | Estado: INGRESO EXITOSO

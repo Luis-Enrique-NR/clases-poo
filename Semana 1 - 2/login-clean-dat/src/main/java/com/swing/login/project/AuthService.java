@@ -1,13 +1,13 @@
 package com.swing.login.project;
 
 public class AuthService {
-    private UsuarioRepository repository;
-
+    private UsuarioRepository repository; // ---> ABSTRACTO
+    
     // Inyección de dependencia por constructor
-    public AuthService(UsuarioRepository repository) {
+    public AuthService(UsuarioRepository repository) {    // ---> ES LO ESPECIFICO
         this.repository = repository;
     }
-
+    
     public boolean validarCredenciales(String username, String password) {
         Usuario usuario = repository.buscarPorUsername(username);
 

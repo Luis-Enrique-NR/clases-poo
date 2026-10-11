@@ -33,9 +33,15 @@ public class UsuarioRepositoryDat implements UsuarioRepository {
             for (int k = 1; k <= total_registros; k++) {
                 RAF.seek((k - 1) * ancho_registro); // Salta directamente al byte del registro k
                 RAF.read(BUFFER);
-                CADENA = BufferToString(BUFFER);
+                
+                //  001MENDOZA DIAZ   EVA MARIA                         eva.mendoza     833167     
 
+                CADENA = BufferToString(BUFFER);
+                
+                //"  001MENDOZA DIAZ   EVA MARIA                         eva.mendoza     833167     "
+                
                 // Verifica que el registro no esté borrado lógicamente ('*')
+                
                 if (CADENA.charAt(0) != '*') {
                     // Extrae las columnas según las posiciones exactas fijadas por el profesor
                     String USER_FILE = CADENA.substring(53, 68).trim();

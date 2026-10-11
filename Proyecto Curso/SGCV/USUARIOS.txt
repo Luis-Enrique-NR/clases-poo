@@ -1,0 +1,7 @@
+admin               admin123 1
+jgonzales           pass2024 1
+mflores             mario888 1
+crodriguez          carlos01 0
+lsanchez            luis9999 1
+afernandez          ana2026! 0
+vbenitez            val12345 1

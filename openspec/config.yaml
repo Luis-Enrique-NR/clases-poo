@@ -1,0 +1,52 @@
+schema: spec-driven
+
+context: |
+  Tech stack: Java 24 (pom declares release 26), Maven 3.9.9, Swing, jar packaging.
+  Module: Semana 1 - 2/login-ip-verif (copy of login-clean-dat), package com.swing.login.project.
+  Architecture: constructor DI (AuthService -> UsuarioRepository), Txt/Dat repository impls, Swing JFrame + NetBeans .form.
+  Persistence: Usuarios.dat / Usuarios.txt + LOG.TXT at module root.
+  Testing: no JUnit dep, src/test/java empty; build via mvn compile/package.
+
+rules:
+  proposal:
+    - Include rollback plan for risky changes
+    - Constraint: traditional special-char validation WITHOUT regex nor lambdas/functional programming
+  specs:
+    - Use Given/When/Then for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+  design:
+    - Include sequence diagrams for complex flows
+    - Document architecture decisions with rationale
+    - Keep validation logic in pure business-rule methods testable without Swing
+  tasks:
+    - Group by phase, use hierarchical numbering
+    - Keep tasks completable in one session
+  apply:
+    guidelines:
+      - Follow existing code patterns (Spanish comments, constructor DI, repository interface)
+      - No regex (String.matches/Pattern/Matcher), no lambdas/streams/method refs in validation path
+    tdd: false
+    test_command: "mvn -pl \"Semana 1 - 2/login-ip-verif\" test"
+  verify:
+    test_command: "mvn -pl \"Semana 1 - 2/login-ip-verif\" test"
+    build_command: "mvn -pl \"Semana 1 - 2/login-ip-verif\" compile"
+    coverage_threshold: 0
+  archive:
+    - Warn before merging destructive deltas
+
+testing:
+  strict_tdd: false
+  reason: No test runner dependency (no JUnit/TestNG in pom.xml) and src/test/java is empty.
+  test_command: "mvn -pl \"Semana 1 - 2/login-ip-verif\" test"
+  build_command: "mvn -pl \"Semana 1 - 2/login-ip-verif\" compile"
+  runners:
+    unit: none
+    integration: none
+    e2e: none
+  coverage:
+    available: false
+    command: "-"
+  quality:
+    linter: "-"
+    type_checker: "javac via maven-compiler-plugin (release flag only)"
+    formatter: "-"

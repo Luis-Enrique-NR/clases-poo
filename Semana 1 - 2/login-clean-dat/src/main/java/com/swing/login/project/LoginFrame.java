@@ -13,8 +13,8 @@ public class LoginFrame extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginFrame.class.getName());
 
     // Inyectar el uso de TXT
-    private AuthService authService = new AuthService(new UsuarioRepositoryDat());
-    
+    private AuthService authService = new AuthService(new UsuarioRepositoryDat()); // <---- IMPLEMENTACION ESPECIFICA
+            
     private LogService logService = new LogService();
     
     // ================================================================================================
@@ -26,6 +26,32 @@ public class LoginFrame extends javax.swing.JFrame {
         initComponents();
     }
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -53,6 +79,8 @@ public class LoginFrame extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("Usuario:");
+
+        UsernameField.addActionListener(this::UsernameFieldActionPerformed);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -123,6 +151,7 @@ public class LoginFrame extends javax.swing.JFrame {
             return;
         }
 
+        
         boolean esValido = authService.validarCredenciales(user, pass);
         logService.registrarIntento(user, esValido);
 
@@ -133,6 +162,10 @@ public class LoginFrame extends javax.swing.JFrame {
             javax.swing.JOptionPane.showMessageDialog(this, "ERROR: Usuario o contraseña incorrectos", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_AceptarButtonActionPerformed
+
+    private void UsernameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UsernameFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_UsernameFieldActionPerformed
 
     /**
      * @param args the command line arguments
