@@ -46,4 +46,10 @@ public class Abstract_Impresora extends Abstract_Equipo_Computo {
         System.out.println("Duplex: " + (duplex ? "Sí" : "No"));
         System.out.println("=========================");
     }
+    
+    @Override
+    protected void mostrarInfoBase() {
+        System.out.println("=== EQUIPO DE CÓMPUTO ===");
+        System.out.println("HOLA MUNDO");
+    }
 }

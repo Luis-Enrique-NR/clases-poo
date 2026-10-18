@@ -2,14 +2,7 @@ package pe.uni.parcial;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-
-@FunctionalInterface
-interface RafWriter {
-    void write(RandomAccessFile raf) throws IOException;
-}
+import java.io.File;
 
 /**
  * Genera los archivos .DAT con registros de longitud fija exacta
@@ -39,17 +32,6 @@ public class GenerarArchivosDat {
         verificarTamanios();
     }
 
-    private static void escribirArchivo(String nombreArchivo, RafWriter escritor) throws IOException {
-        // Eliminar archivo anterior si existe para evitar bytes residuales
-        Path path = Path.of(nombreArchivo);
-        if (Files.exists(path)) {
-            Files.delete(path);
-        }
-        try (RandomAccessFile raf = new RandomAccessFile(nombreArchivo, "rw")) {
-            escritor.write(raf);
-        }
-    }
-
     private static void generarClientes() throws IOException {
         // Id(4), RazonSocial(17), RUC(11) = 32
         String[][] datos = {
@@ -63,13 +45,25 @@ public class GenerarArchivosDat {
             {"C008", "Mecanica SIGMA", "99911100085"}
         };
 
-        escribirArchivo("CLIENTES.DAT", raf -> {
-            for (String[] d : datos) {
-                String registro = String.format("%-4s%-17s%-11s", d[0], d[1], d[2]);
-                raf.write(registro.getBytes(StandardCharsets.ISO_8859_1));
+        // Borrar archivo anterior si existe
+        File archivo = new File("CLIENTES.DAT");
+        if (archivo.exists()) {
+            archivo.delete();
+        }
+
+        try (RandomAccessFile raf = new RandomAccessFile("CLIENTES.DAT", "rw")) {
+            for (int i = 0; i < datos.length; i++) {
+                String[] d = datos[i];
+                // %-4s   = izquierda, 4 chars (Id)
+                // %-17s  = izquierda, 17 chars (RazonSocial)
+                // %-11s  = izquierda, 11 chars (RUC)
+                String registro = String.format("%-4s%-17s%-11s",
+                        d[0], d[1], d[2]);
+                
+                raf.write(registro.getBytes());
             }
-        } );
-        System.out.println("CLIENTES.DAT: " + datos.length + " registros × " + LEN_CLIENTES + " bytes");
+        }
+        System.out.println("CLIENTES.DAT: " + datos.length + " registros x " + LEN_CLIENTES + " bytes");
     }
 
     private static void generarEmpleados() throws IOException {
@@ -81,13 +75,21 @@ public class GenerarArchivosDat {
             {"E04", "Juan Soto"}
         };
 
-        escribirArchivo("EMPLEADO.DAT", raf -> {
-            for (String[] d : datos) {
+        File archivo = new File("EMPLEADO.DAT");
+        if (archivo.exists()) {
+            archivo.delete();
+        }
+
+        try (RandomAccessFile raf = new RandomAccessFile("EMPLEADO.DAT", "rw")) {
+            for (int i = 0; i < datos.length; i++) {
+                String[] d = datos[i];
+                // %-3s  = izquierda, 3 chars (Id)
+                // %-16s = izquierda, 16 chars (NomApe)
                 String registro = String.format("%-3s%-16s", d[0], d[1]);
-                raf.write(registro.getBytes(StandardCharsets.ISO_8859_1));
+                raf.write(registro.getBytes());
             }
-        });
-        System.out.println("EMPLEADO.DAT: " + datos.length + " registros × " + LEN_EMPLEADO + " bytes");
+        }
+        System.out.println("EMPLEADO.DAT: " + datos.length + " registros x " + LEN_EMPLEADO + " bytes");
     }
 
     private static void generarCategorias() throws IOException {
@@ -99,13 +101,25 @@ public class GenerarArchivosDat {
             {"4", "Accesorios de Oficina"}
         };
 
-        escribirArchivo("CATEGORIAS.DAT", raf -> {
-            for (String[] d : datos) {
-                String registro = String.format("%2s%-31s", d[0], d[1]);
-                raf.write(registro.getBytes(StandardCharsets.ISO_8859_1));
+        File archivo = new File("CATEGORIAS.DAT");
+        if (archivo.exists()) {
+            archivo.delete();
+        }
+
+        try (RandomAccessFile raf = new RandomAccessFile("CATEGORIAS.DAT", "rw")) {
+            for (int i = 0; i < datos.length; i++) {
+                
+                String[] d = datos[i];
+                
+                // %2s  = derecha, 2 chars (Id) - alinear a la derecha para números
+                // %-31s = izquierda, 31 chars (Descripcion)
+                String registro = String.format("%2s%-31s", 
+                        d[0], d[1]);
+                
+                raf.write(registro.getBytes());
             }
-        });
-        System.out.println("CATEGORIAS.DAT: " + datos.length + " registros × " + LEN_CATEGORIAS + " bytes");
+        }
+        System.out.println("CATEGORIAS.DAT: " + datos.length + " registros x " + LEN_CATEGORIAS + " bytes");
     }
 
     private static void generarProductos() throws IOException {
@@ -127,14 +141,26 @@ public class GenerarArchivosDat {
             {"P957", "Jabon Liquido Clean", "2", "25.00", "1"}
         };
 
-        escribirArchivo("PRODUCTOS.DAT", raf -> {
-            for (String[] d : datos) {
+        File archivo = new File("PRODUCTOS.DAT");
+        if (archivo.exists()) {
+            archivo.delete();
+        }
+
+        try (RandomAccessFile raf = new RandomAccessFile("PRODUCTOS.DAT", "rw")) {
+            for (int i = 0; i < datos.length; i++) {
+                String[] d = datos[i];
+                // %11s  = derecha, 11 chars (Precio) - alinear números a la derecha
                 String precio = String.format("%11s", d[3]);
+                // %-4s   = izquierda, 4 chars (Id)
+                // %-20s  = izquierda, 20 chars (Nombre)
+                // %-1s   = izquierda, 1 char  (IdCategoria)
+                // %-11s  = izquierda, 11 chars (Precio ya formateado)
+                // %-1s   = izquierda, 1 char  (IdMoneda)
                 String registro = String.format("%-4s%-20s%-1s%-11s%-1s", d[0], d[1], d[2], precio, d[4]);
-                raf.write(registro.getBytes(StandardCharsets.ISO_8859_1));
+                raf.write(registro.getBytes());
             }
-        });
-        System.out.println("PRODUCTOS.DAT: " + datos.length + " registros × " + LEN_PRODUCTOS + " bytes");
+        }
+        System.out.println("PRODUCTOS.DAT: " + datos.length + " registros x " + LEN_PRODUCTOS + " bytes");
     }
 
     private static void generarCabeceraVentas() throws IOException {
@@ -150,15 +176,30 @@ public class GenerarArchivosDat {
             {"0008", "20250520", "124252", "C008", "2", "780.00", "2", "E04"}
         };
 
-        escribirArchivo("REGISTRO_VENTAS_CABECERA.DAT", raf -> {
-            for (String[] d : datos) {
+        File archivo = new File("REGISTRO_VENTAS_CABECERA.DAT");
+        if (archivo.exists()) {
+            archivo.delete();
+        }
+
+        try (RandomAccessFile raf = new RandomAccessFile("REGISTRO_VENTAS_CABECERA.DAT", "rw")) {
+            for (int i = 0; i < datos.length; i++) {
+                String[] d = datos[i];
+                // %14s  = derecha, 14 chars (Monto) - alinear números a la derecha
                 String monto = String.format("%14s", d[5]);
+                // %-4s  = izquierda, 4 chars (Id)
+                // %-8s  = izquierda, 8 chars (Fecha YYYYMMDD)
+                // %-6s  = izquierda, 6 chars (Hora HHMMSS)
+                // %-4s  = izquierda, 4 chars (IdCliente)
+                // %-1s  = izquierda, 1 char  (TipoPago)
+                // %-14s = izquierda, 14 chars (Monto ya formateado)
+                // %-1s  = izquierda, 1 char  (IdMoneda)
+                // %-3s  = izquierda, 3 chars (IdEmpleado)
                 String registro = String.format("%-4s%-8s%-6s%-4s%-1s%-14s%-1s%-3s",
                     d[0], d[1], d[2], d[3], d[4], monto, d[6], d[7]);
-                raf.write(registro.getBytes(StandardCharsets.ISO_8859_1));
+                raf.write(registro.getBytes());
             }
-        });
-        System.out.println("REGISTRO_VENTAS_CABECERA.DAT: " + datos.length + " registros × " + LEN_CABECERA + " bytes");
+        }
+        System.out.println("REGISTRO_VENTAS_CABECERA.DAT: " + datos.length + " registros x " + LEN_CABECERA + " bytes");
     }
 
     private static void generarDetalleVentas() throws IOException {
@@ -190,31 +231,48 @@ public class GenerarArchivosDat {
             {"0008", "02", "P125", "4"}
         };
 
-        escribirArchivo("REGISTRO_VENTAS_DETALLE.DAT", raf -> {
-            for (String[] d : datos) {
+        
+        
+        File archivo = new File("REGISTRO_VENTAS_DETALLE.DAT");
+        if (archivo.exists()) {
+            archivo.delete();
+        }
+
+        try (RandomAccessFile raf = new RandomAccessFile("REGISTRO_VENTAS_DETALLE.DAT", "rw")) {
+            for (int i = 0; i < datos.length; i++) {
+                String[] d = datos[i];
+                // %5s  = derecha, 5 chars (Cantidad) - alinear números a la derecha
                 String cantidad = String.format("%5s", d[3]);
+                // %-4s = izquierda, 4 chars (Id venta)
+                // %-2s = izquierda, 2 chars (Secuencia)
+                // %-4s = izquierda, 4 chars (IdProducto)
+                // %-5s = izquierda, 5 chars (Cantidad ya formateada)
                 String registro = String.format("%-4s%-2s%-4s%-5s", d[0], d[1], d[2], cantidad);
-                raf.write(registro.getBytes(StandardCharsets.ISO_8859_1));
+                raf.write(registro.getBytes());
             }
-        });
-        System.out.println("REGISTRO_VENTAS_DETALLE.DAT: " + datos.length + " registros × " + LEN_DETALLE + " bytes");
+        }
+        System.out.println("REGISTRO_VENTAS_DETALLE.DAT: " + datos.length + " registros x " + LEN_DETALLE + " bytes");
     }
 
+    
+    // ---
+    
+    
     private static void verificarTamanios() throws IOException {
-        java.io.File[] archivos = {
-            new java.io.File("CLIENTES.DAT"),
-            new java.io.File("EMPLEADO.DAT"),
-            new java.io.File("CATEGORIAS.DAT"),
-            new java.io.File("PRODUCTOS.DAT"),
-            new java.io.File("REGISTRO_VENTAS_CABECERA.DAT"),
-            new java.io.File("REGISTRO_VENTAS_DETALLE.DAT")
+        File[] archivos = {
+            new File("CLIENTES.DAT"),
+            new File("EMPLEADO.DAT"),
+            new File("CATEGORIAS.DAT"),
+            new File("PRODUCTOS.DAT"),
+            new File("REGISTRO_VENTAS_CABECERA.DAT"),
+            new File("REGISTRO_VENTAS_DETALLE.DAT")
         };
-        int[] esperados = {256, 76, 132, 518, 328, 360}; // 24 registros × 15 = 360
+        int[] esperados = {256, 76, 132, 518, 328, 360};
 
         for (int i = 0; i < archivos.length; i++) {
             long real = archivos[i].length();
-            String ok = (real == esperados[i]) ? "✓" : "✗ ESPERADO: " + esperados[i];
-            System.out.printf("  %s: %d bytes %s%n", archivos[i].getName(), real, ok);
+            String ok = (real == esperados[i]) ? "OK" : "ERROR - ESPERADO: " + esperados[i];
+            System.out.println("  " + archivos[i].getName() + ": " + real + " bytes " + ok);
         }
     }
 }

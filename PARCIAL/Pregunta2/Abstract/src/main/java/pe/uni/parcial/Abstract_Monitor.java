@@ -37,6 +37,7 @@ public class Abstract_Monitor extends Abstract_Equipo_Computo {
         this.tipoPanel = tipoPanel;
     }
 
+    
     @Override
     public void mostrarInfo() {
         mostrarInfoBase();
@@ -46,4 +47,5 @@ public class Abstract_Monitor extends Abstract_Equipo_Computo {
         System.out.println("Tipo Panel: " + tipoPanel);
         System.out.println("=========================");
     }
+    
 }

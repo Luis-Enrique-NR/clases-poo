@@ -2,7 +2,6 @@ package pe.uni.parcial;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,21 +15,25 @@ public class LectorArchivos {
     private static final int LEN_CABECERA = 41;
     private static final int LEN_DETALLE = 15;
 
-    private static final byte[] BUFFER = new byte[Math.max(Math.max(Math.max(Math.max(Math.max(
-        LEN_CLIENTES, LEN_EMPLEADO), LEN_CATEGORIAS), LEN_PRODUCTOS), LEN_CABECERA), LEN_DETALLE)];
-
     public List<Cliente> leerClientes() throws IOException {
         List<Cliente> lista = new ArrayList<>();
         try (RandomAccessFile raf = new RandomAccessFile("CLIENTES.DAT", "r")) {
             long total = raf.length();
             int n = (int) (total / LEN_CLIENTES);
+            // Buffer exacto para un registro
+            byte[] bytes = new byte[LEN_CLIENTES];
+
             for (int i = 0; i < n; i++) {
                 raf.seek(i * LEN_CLIENTES);
-                raf.readFully(BUFFER, 0, LEN_CLIENTES);
-                String linea = new String(BUFFER, 0, LEN_CLIENTES, StandardCharsets.ISO_8859_1);
-                String id = linea.substring(0, 4).trim();
-                String razonSocial = linea.substring(4, 21).trim();
-                String ruc = linea.substring(21, 32).trim();
+                
+                raf.read(bytes);  // Leer registro completo (32 bytes)
+                
+                String linea = new String(bytes, 0, LEN_CLIENTES);
+                
+                // substring(inicio, fin) - fin es EXCLUSIVO
+                String id = linea.substring(0, 4).trim();      // 0-3   (4 chars)
+                String razonSocial = linea.substring(4, 21).trim(); // 4-20  (17 chars)
+                String ruc = linea.substring(21, 32).trim();   // 21-31 (11 chars)
                 lista.add(new Cliente(id, razonSocial, ruc));
             }
         }
@@ -42,12 +45,14 @@ public class LectorArchivos {
         try (RandomAccessFile raf = new RandomAccessFile("EMPLEADO.DAT", "r")) {
             long total = raf.length();
             int n = (int) (total / LEN_EMPLEADO);
+            byte[] bytes = new byte[LEN_EMPLEADO];
+
             for (int i = 0; i < n; i++) {
                 raf.seek(i * LEN_EMPLEADO);
-                raf.readFully(BUFFER, 0, LEN_EMPLEADO);
-                String linea = new String(BUFFER, 0, LEN_EMPLEADO, StandardCharsets.ISO_8859_1);
-                String id = linea.substring(0, 3).trim();
-                String nomApe = linea.substring(3, 19).trim();
+                raf.read(bytes);  // Leer registro completo (19 bytes)
+                String linea = new String(bytes, 0, LEN_EMPLEADO);
+                String id = linea.substring(0, 3).trim();      // 0-2   (3 chars)
+                String nomApe = linea.substring(3, 19).trim(); // 3-18  (16 chars)
                 lista.add(new Empleado(id, nomApe));
             }
         }
@@ -59,12 +64,14 @@ public class LectorArchivos {
         try (RandomAccessFile raf = new RandomAccessFile("CATEGORIAS.DAT", "r")) {
             long total = raf.length();
             int n = (int) (total / LEN_CATEGORIAS);
+            byte[] bytes = new byte[LEN_CATEGORIAS];
+
             for (int i = 0; i < n; i++) {
                 raf.seek(i * LEN_CATEGORIAS);
-                raf.readFully(BUFFER, 0, LEN_CATEGORIAS);
-                String linea = new String(BUFFER, 0, LEN_CATEGORIAS, StandardCharsets.ISO_8859_1);
-                String id = linea.substring(0, 2).trim();
-                String descripcion = linea.substring(2, 33).trim();
+                raf.read(bytes);  // Leer registro completo (33 bytes)
+                String linea = new String(bytes, 0, LEN_CATEGORIAS);
+                String id = linea.substring(0, 2).trim();       // 0-1   (2 chars)
+                String descripcion = linea.substring(2, 33).trim(); // 2-32  (31 chars)
                 lista.add(new Categoria(id, descripcion));
             }
         }
@@ -76,15 +83,17 @@ public class LectorArchivos {
         try (RandomAccessFile raf = new RandomAccessFile("PRODUCTOS.DAT", "r")) {
             long total = raf.length();
             int n = (int) (total / LEN_PRODUCTOS);
+            byte[] bytes = new byte[LEN_PRODUCTOS];
+
             for (int i = 0; i < n; i++) {
                 raf.seek(i * LEN_PRODUCTOS);
-                raf.readFully(BUFFER, 0, LEN_PRODUCTOS);
-                String linea = new String(BUFFER, 0, LEN_PRODUCTOS, StandardCharsets.ISO_8859_1);
-                String id = linea.substring(0, 4).trim();
-                String nombre = linea.substring(4, 24).trim();
-                String idCategoria = linea.substring(24, 25).trim();
-                String precioStr = linea.substring(25, 36).trim();
-                String idMoneda = linea.substring(36, 37).trim();
+                raf.read(bytes);  // Leer registro completo (37 bytes)
+                String linea = new String(bytes, 0, LEN_PRODUCTOS);
+                String id = linea.substring(0, 4).trim();        // 0-3   (4 chars)
+                String nombre = linea.substring(4, 24).trim();   // 4-23  (20 chars)
+                String idCategoria = linea.substring(24, 25).trim(); // 24    (1 char)
+                String precioStr = linea.substring(25, 36).trim();   // 25-35 (11 chars)
+                String idMoneda = linea.substring(36, 37).trim();    // 36    (1 char)
                 double precio = Double.parseDouble(precioStr);
                 lista.add(new Producto(id, nombre, idCategoria, precio, idMoneda));
             }
@@ -97,18 +106,20 @@ public class LectorArchivos {
         try (RandomAccessFile raf = new RandomAccessFile("REGISTRO_VENTAS_CABECERA.DAT", "r")) {
             long total = raf.length();
             int n = (int) (total / LEN_CABECERA);
+            byte[] bytes = new byte[LEN_CABECERA];
+
             for (int i = 0; i < n; i++) {
                 raf.seek(i * LEN_CABECERA);
-                raf.readFully(BUFFER, 0, LEN_CABECERA);
-                String linea = new String(BUFFER, 0, LEN_CABECERA, StandardCharsets.ISO_8859_1);
-                String id = linea.substring(0, 4).trim();
-                String fecha = linea.substring(4, 12).trim();
-                String hora = linea.substring(12, 18).trim();
-                String idCliente = linea.substring(18, 22).trim();
-                String tipoPago = linea.substring(22, 23).trim();
-                String montoStr = linea.substring(23, 37).trim();
-                String idMoneda = linea.substring(37, 38).trim();
-                String idEmpleado = linea.substring(38, 41).trim();
+                raf.read(bytes);  // Leer registro completo (41 bytes)
+                String linea = new String(bytes, 0, LEN_CABECERA);
+                String id = linea.substring(0, 4).trim();        // 0-3   (4 chars)
+                String fecha = linea.substring(4, 12).trim();    // 4-11  (8 chars)
+                String hora = linea.substring(12, 18).trim();    // 12-17 (6 chars)
+                String idCliente = linea.substring(18, 22).trim(); // 18-21 (4 chars)
+                String tipoPago = linea.substring(22, 23).trim();  // 22    (1 char)
+                String montoStr = linea.substring(23, 37).trim();  // 23-36 (14 chars)
+                String idMoneda = linea.substring(37, 38).trim();  // 37    (1 char)
+                String idEmpleado = linea.substring(38, 41).trim(); // 38-40 (3 chars)
                 double monto = Double.parseDouble(montoStr);
                 lista.add(new VentaCabecera(id, fecha, hora, idCliente, tipoPago, monto, idMoneda, idEmpleado));
             }
@@ -121,14 +132,16 @@ public class LectorArchivos {
         try (RandomAccessFile raf = new RandomAccessFile("REGISTRO_VENTAS_DETALLE.DAT", "r")) {
             long total = raf.length();
             int n = (int) (total / LEN_DETALLE);
+            byte[] bytes = new byte[LEN_DETALLE];
+
             for (int i = 0; i < n; i++) {
                 raf.seek(i * LEN_DETALLE);
-                raf.readFully(BUFFER, 0, LEN_DETALLE);
-                String linea = new String(BUFFER, 0, LEN_DETALLE, StandardCharsets.ISO_8859_1);
-                String id = linea.substring(0, 4).trim();
-                String secuencia = linea.substring(4, 6).trim();
-                String idProducto = linea.substring(6, 10).trim();
-                String cantidadStr = linea.substring(10, 15).trim();
+                raf.read(bytes);  // Leer registro completo (15 bytes)
+                String linea = new String(bytes, 0, LEN_DETALLE);
+                String id = linea.substring(0, 4).trim();       // 0-3   (4 chars)
+                String secuencia = linea.substring(4, 6).trim(); // 4-5   (2 chars)
+                String idProducto = linea.substring(6, 10).trim(); // 6-9   (4 chars)
+                String cantidadStr = linea.substring(10, 15).trim(); // 10-14 (5 chars)
                 int cantidad = Integer.parseInt(cantidadStr);
                 lista.add(new VentaDetalle(id, secuencia, idProducto, cantidad));
             }

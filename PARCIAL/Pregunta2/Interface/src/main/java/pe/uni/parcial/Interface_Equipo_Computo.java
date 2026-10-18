@@ -27,4 +27,8 @@ public interface Interface_Equipo_Computo {
         System.out.println("Precio: S/ " + getPrecio());
         System.out.println("N° Serie: " + getNumeroSerie());
     }
+    
+    default int getSalario() {
+        return 1130;
+    }
 }

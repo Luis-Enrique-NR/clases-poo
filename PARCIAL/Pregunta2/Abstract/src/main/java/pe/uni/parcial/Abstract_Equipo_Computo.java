@@ -47,7 +47,7 @@ public abstract class Abstract_Equipo_Computo {
 
     // Método abstracto: obliga a las subclases a implementarlo
     public abstract void mostrarInfo();
-
+    
     // Método concreto compartido (opcional, para mostrar datos base)
     protected void mostrarInfoBase() {
         System.out.println("=== EQUIPO DE CÓMPUTO ===");

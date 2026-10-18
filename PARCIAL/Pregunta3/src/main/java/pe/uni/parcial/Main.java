@@ -48,6 +48,7 @@ public class Main {
 
         // Sumar cantidades por idProducto usando HashMap
         Map<String, Integer> ventasPorProducto = new HashMap<>();
+
         for (int i = 0; i < detalles.size(); i++) {
             VentaDetalle d = detalles.get(i);
             String idProducto = d.getIdProducto();
@@ -62,13 +63,12 @@ public class Main {
             }
         }
 
-        // Encontrar el producto con mayor cantidad (recorrer el mapa)
+        // Encontrar el producto con mayor cantidad (recorrer las CLAVES del mapa)
         String idProdMax = null;
         int cantidadMax = -1;
 
-        for (Map.Entry<String, Integer> entry : ventasPorProducto.entrySet()) {
-            String id = entry.getKey();
-            int total = entry.getValue();
+        for (String id : ventasPorProducto.keySet()) {
+            int total = ventasPorProducto.get(id);
             if (total > cantidadMax) {
                 cantidadMax = total;
                 idProdMax = id;
@@ -113,9 +113,8 @@ public class Main {
         String idCliMax = null;
         int freqMax = -1;
 
-        for (Map.Entry<String, Integer> entry : freqPorCliente.entrySet()) {
-            String id = entry.getKey();
-            int freq = entry.getValue();
+        for (String id : freqPorCliente.keySet()) {
+            int freq = freqPorCliente.get(id);
             if (freq > freqMax) {
                 freqMax = freq;
                 idCliMax = id;
@@ -160,9 +159,8 @@ public class Main {
         String idEmpMax = null;
         int opsMax = -1;
 
-        for (Map.Entry<String, Integer> entry : opsPorEmpleado.entrySet()) {
-            String id = entry.getKey();
-            int ops = entry.getValue();
+        for (String id : opsPorEmpleado.keySet()) {
+            int ops = opsPorEmpleado.get(id);
             if (ops > opsMax) {
                 opsMax = ops;
                 idEmpMax = id;

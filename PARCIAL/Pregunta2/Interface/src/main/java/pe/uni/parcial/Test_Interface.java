@@ -5,13 +5,13 @@ public class Test_Interface {
         System.out.println("=== PRUEBA INTERFAZ ===\n");
 
         // Crear Monitor
-        Interface_Monitor monitor = new Interface_Monitor(
+        Interface_Equipo_Computo monitor = new Interface_Monitor(
             "Samsung", "Odyssey G5", 1200.00, "SN123456",
             27.0, "2560x1440", "VA"
         );
 
         // Crear Impresora
-        Interface_Impresora impresora = new Interface_Impresora(
+        Interface_Equipo_Computo impresora = new Interface_Impresora(
             "HP", "LaserJet Pro", 850.00, "SN789012",
             "laser", 22, true
         );
